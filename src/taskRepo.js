@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const taskFilePath = path.join(__dirname, "tasks.json");
+const taskFilePath = path.join( "./.data/tasks.json");
 
 function loadTasks() {
     if (!fs.existsSync(taskFilePath)) {
