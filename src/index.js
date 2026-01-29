@@ -1,6 +1,7 @@
 const {  addTask, viewTasks, deleteTasks } = require("./taskRepo");
- 
-console.log("Running TODO CLi app");
+const logger = require("./logger");
+
+logger.info("Running TODO CLi app");
 
 const command = process.argv[2];
 const value = process.argv[3];

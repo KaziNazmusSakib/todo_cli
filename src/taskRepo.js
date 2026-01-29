@@ -1,16 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 
-const taskFilePath = path.join(__dirname, "tasks.json");
+const taskFilePath = path.join( "./.data/tasks.json");
+const logger = require("./logger");
+
 
 function loadTasks() {
     if (!fs.existsSync(taskFilePath)) {
-        console.warn("no task found");
+        logger.warn("no task found");
         return [];
     }
     const data = fs.readFileSync(taskFilePath, "utf-8");
     const taskList = JSON.parse(data);
-    console.log(`Loaded ${taskList.length} tasks`);
+    logger.info(`Loaded ${taskList.length} tasks`);
     return taskList;
 }
 
@@ -19,7 +21,7 @@ function saveTasks(taskList) {
     if (!Array.isArray(taskList)) {
         throw new Error("taskList must be an array");
     }
-    console.log(`saving ${taskList.length} tasks...`);
+    logger.info(`saving ${taskList.length} tasks...`);
     fs.writeFileSync(taskFilePath, JSON.stringify(taskList));
 }
 
@@ -43,19 +45,19 @@ function addTask(taskTitle) {
     };
     taskList.push(newTask);
     saveTasks(taskList);
-    console.log(`Added: ${taskTitle}`)
+    logger.info(`Added: ${taskTitle}`)
 }
 
 function viewTasks() {
     const taskList = loadTasks();;
-    console.log("========================*========================");
-    console.log(taskList);
-    console.log("========================*========================");
+    logger.info("========================*========================");
+    logger.info(taskList.map((task) => `[${task.date}]ID: ${task.id}: ${task.title}`).join('\n')) ;
+    logger.info("========================*========================");
 }
 
 function deleteTasks(id) {
     const taskList = loadTasks();
-    console.warn(`Deleting task with ID ${id}`)
+    logger.warn(`Deleting task with ID ${id}`)
     saveTasks(taskList.filter((task) => task.id !== parseInt(id)));
 }
 
